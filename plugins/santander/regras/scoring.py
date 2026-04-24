@@ -1,0 +1,5 @@
+encontrar_melhor_correspondencia_com_pontuacao()
+
+encontrar_melhor_correspondencia_com_pontuacao_nsu()
+
+selecionar_melhor_por_pontuacao_com_autorizacao_e_nsu()

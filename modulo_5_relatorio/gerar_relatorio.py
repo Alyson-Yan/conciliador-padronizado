@@ -50,6 +50,30 @@ def separar_conciliados(df_conciliado):
     df_aba_conciliados = df_conciliado[mascara_conciliado].copy()
     df_aba_nao_conciliados = df_conciliado[~mascara_conciliado].copy()
 
+    # Mantém o comportamento do código original da CredShop:
+    # aluguel e estorno NÃO ficam na aba "Não conciliados".
+    # Eles continuam indo para abas especiais.
+    if "tipo_lancamento_instituicao" in df_aba_nao_conciliados.columns:
+        tipo_lancamento = (
+            df_aba_nao_conciliados["tipo_lancamento_instituicao"]
+            .astype(str)
+            .str.lower()
+        )
+
+        df_aba_nao_conciliados = df_aba_nao_conciliados[
+            ~tipo_lancamento.str.contains("aluguel", na=False)
+        ].copy()
+
+        tipo_lancamento = (
+            df_aba_nao_conciliados["tipo_lancamento_instituicao"]
+            .astype(str)
+            .str.lower()
+        )
+
+        df_aba_nao_conciliados = df_aba_nao_conciliados[
+            ~tipo_lancamento.str.contains("estorno", na=False)
+        ].copy()
+
     return df_aba_conciliados, df_aba_nao_conciliados
 
 

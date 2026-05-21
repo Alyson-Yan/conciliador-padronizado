@@ -1,0 +1,97 @@
+Listagem de caminhos de pasta
+O número de série do volume é 0000009D B0A3:07A8
+C:.
+¦   debug_colunas_credishop.py
+¦   estrutura_projeto.txt
+¦   main.py
+¦   teste.py
+¦   
++---core
+¦   ¦   fluxo_conciliacao.py
+¦   ¦   validacao_fluxo.py
+¦   ¦   __init__.py
+¦   ¦   
+¦   +---__pycache__
+¦           fluxo_conciliacao.cpython-38.pyc
+¦           validacao_fluxo.cpython-38.pyc
+¦           __init__.cpython-38.pyc
+¦           
++---docs
+¦   ¦   checkpoint_arquitetura_modular.md
+¦   ¦   cielo_modelo_base.md
+¦   ¦   
+¦   +---docs
+¦           checkpoint_instituicoes_validadas.md
+¦           
++---modulo_1_selecao
+¦   ¦   instituicoes.py
+¦   ¦   
+¦   +---__pycache__
+¦           instituicoes.cpython-38.pyc
+¦           
++---modulo_2_upload
+¦   ¦   leitor_arquivos.py
+¦   ¦   __init__.py
+¦   ¦   
+¦   +---__pycache__
+¦           leitor_arquivos.cpython-38.pyc
+¦           __init__.cpython-38.pyc
+¦           
++---modulo_3_padronizacao
+¦   ¦   cielo_padronizador.py
+¦   ¦   credishop_padronizador.py
+¦   ¦   erp_padronizador.py
+¦   ¦   pagbank_padronizador.py
+¦   ¦   santander_padronizador.py
+¦   ¦   
+¦   +---__pycache__
+¦           cielo_padronizador.cpython-38.pyc
+¦           credishop_padronizador.cpython-38.pyc
+¦           erp_padronizador.cpython-38.pyc
+¦           pagbank_padronizador.cpython-38.pyc
+¦           
++---modulo_4_conciliacao
+¦   ¦   motor_cielo.py
+¦   ¦   motor_credishop.py
+¦   ¦   motor_pagbank.py
+¦   ¦   
+¦   +---__pycache__
+¦           motor_cielo.cpython-38.pyc
+¦           motor_conciliacao.cpython-38.pyc
+¦           motor_credishop.cpython-38.pyc
+¦           motor_pagbank.cpython-38.pyc
+¦           
++---modulo_5_relatorio
+¦   ¦   gerar_relatorio.py
+¦   ¦   
+¦   +---__pycache__
+¦           gerar_relatorio.cpython-38.pyc
+¦           
++---modulo_6_download
+¦   ¦   preparar_download.py
+¦   ¦   
+¦   +---__pycache__
+¦           preparar_download.cpython-38.pyc
+¦           
++---saida_testes
+¦   ¦   cielo_conciliada_teste.xlsx
+¦   ¦   cielo_padronizada.xlsx
+¦   ¦   credishop_conciliada_teste.xlsx
+¦   ¦   credishop_padronizada.xlsx
+¦   ¦   erp_padronizado.xlsx
+¦   ¦   pagbank_conciliada_teste.xlsx
+¦   ¦   pagbank_padronizada.xlsx
+¦   ¦   relatorio_conciliacao_cielo.xlsx
+¦   ¦   relatorio_conciliacao_credishop.xlsx
+¦   ¦   relatorio_conciliacao_pagbank.xlsx
+¦   ¦   
+¦   +---download
+¦           conciliacao_cielo_2026_21_05.xlsx
+¦           conciliacao_credishop_2026_21_05.xlsx
+¦           conciliacao_pagbank_2026_21_05.xlsx
+¦           
++---utils
+        datas.py
+        textos.py
+        valores.py
+        

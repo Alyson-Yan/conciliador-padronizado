@@ -3,7 +3,8 @@ from modulo_3_padronizacao.pagbank_padronizador import padronizar_pagbank
 
 from modulo_4_conciliacao.motor_cielo import conciliar_padronizado
 from modulo_4_conciliacao.motor_pagbank import conciliar_pagbank
-
+from modulo_3_padronizacao.credishop_padronizador import padronizar_credishop
+from modulo_4_conciliacao.motor_credishop import conciliar_credishop
 
 INSTITUICOES = {
     "cielo": {
@@ -17,6 +18,13 @@ INSTITUICOES = {
         "nome": "PagBank",
         "padronizador": padronizar_pagbank,
         "conciliador": conciliar_pagbank,
+        "formatos_aceitos": ["csv"],
+    },
+
+    "credishop": {
+        "nome": "Credishop",
+        "padronizador": padronizar_credishop,
+        "conciliador": conciliar_credishop,
         "formatos_aceitos": ["csv"],
     },
 }

@@ -37,18 +37,19 @@ def normalizar_nome_arquivo(texto):
 
 def obter_data_referencia(df_conciliado):
     """
-    Pega uma data de referência do relatório.
+    Pega uma data de referência para montar o nome do arquivo final.
+
     Prioridade:
-    1. data_venda_instituicao
-    2. data_pagamento_instituicao
-    3. data_vencimento_instituicao
-    4. data atual
+    1. data_pagamento_instituicao   -> data real de recebimento/pagamento
+    2. data_vencimento_instituicao  -> data prevista de recebimento
+    3. data_venda_instituicao       -> data da venda
+    4. data atual                   -> fallback de segurança
     """
 
     colunas_data = [
-        "data_venda_instituicao",
         "data_pagamento_instituicao",
         "data_vencimento_instituicao",
+        "data_venda_instituicao",
     ]
 
     for coluna in colunas_data:
@@ -59,6 +60,8 @@ def obter_data_referencia(df_conciliado):
                 return datas_validas.min()
 
     return datetime.now()
+
+
 
 
 def formatar_data_nome_arquivo(data_referencia):
@@ -74,13 +77,12 @@ def formatar_data_nome_arquivo(data_referencia):
     return f"{ano}_{dia}_{mes}"
 
 
-def gerar_nome_arquivo_final(instituicao, df_conciliado):
+def gerar_nome_arquivo_final(instituicao, df_conciliado=None):
     instituicao = normalizar_nome_arquivo(instituicao)
 
-    data_referencia = obter_data_referencia(df_conciliado)
-    data_formatada = formatar_data_nome_arquivo(data_referencia)
-
-    return f"conciliacao_{instituicao}_{data_formatada}.xlsx"
+    data_geracao = datetime.now().strftime("%Y_%d_%m")
+    
+    return f"conciliacao_{instituicao}_{data_geracao}.xlsx"
 
 
 def preparar_arquivo_download(

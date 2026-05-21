@@ -46,6 +46,14 @@ def carregar_arquivo_instituicao(caminho_arquivo, instituicao):
     extensao = obter_extensao_arquivo(caminho_arquivo)
 
     if extensao == "csv":
+        if instituicao.lower().strip() == "credishop":
+            return pd.read_csv(
+                caminho_arquivo,
+                sep=";",
+                encoding="latin1",
+                header=None
+            )
+
         return ler_arquivo_csv(
             caminho_arquivo,
             sep=";",

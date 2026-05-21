@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+
+saida_testes/
+*.xlsx
+*.xls
+
+.env
+.venv/
+venv/
+
+.DS_Store
+Thumbs.db

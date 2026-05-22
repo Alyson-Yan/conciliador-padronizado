@@ -35,26 +35,23 @@ COLUNAS_RELATORIO_PADRAO = [
 ]
 
 
-# ============================================================
-# SEPARAÇÃO E RESUMO
-# ============================================================
-
 def separar_conciliados(df_conciliado):
     df_conciliado = df_conciliado.copy()
 
-    mascara_conciliado = df_conciliado["status_conciliacao"].str.startswith(
-        "Conciliado",
-        na=False
-    )
+    # =========================
+    # IDENTIFICA CASOS ESPECIAIS
+    # =========================
+    # Casos especiais não devem entrar nem em "Conciliados"
+    # nem em "Não conciliados".
+    # Eles ficam apenas nas abas próprias:
+    # - Cancelamentos
+    # - Aluguel e Tarifas
+    # - Estornos
+    # =========================
 
-    df_aba_conciliados = df_conciliado[mascara_conciliado].copy()
-    df_aba_nao_conciliados = df_conciliado[~mascara_conciliado].copy()
-
-    # Casos especiais não devem ficar na aba "Não conciliados".
-    # Eles vão para abas próprias.
-    if "tipo_lancamento_instituicao" in df_aba_nao_conciliados.columns:
+    if "tipo_lancamento_instituicao" in df_conciliado.columns:
         tipo_lancamento = (
-            df_aba_nao_conciliados["tipo_lancamento_instituicao"]
+            df_conciliado["tipo_lancamento_instituicao"]
             .astype(str)
             .str.lower()
         )
@@ -66,10 +63,37 @@ def separar_conciliados(df_conciliado):
             | tipo_lancamento.str.contains("cancelamento", na=False)
             | tipo_lancamento.str.contains("chargeback", na=False)
         )
+    else:
+        mascara_especial = pd.Series(
+            False,
+            index=df_conciliado.index
+        )
 
-        df_aba_nao_conciliados = df_aba_nao_conciliados[
-            ~mascara_especial
-        ].copy()
+    # =========================
+    # IDENTIFICA CONCILIADOS
+    # =========================
+
+    mascara_conciliado = df_conciliado["status_conciliacao"].str.startswith(
+        "Conciliado",
+        na=False
+    )
+
+    # =========================
+    # SEPARA ABAS PRINCIPAIS
+    # =========================
+    # Importante:
+    # especial não entra em conciliado nem não conciliado.
+    # =========================
+
+    df_aba_conciliados = df_conciliado[
+        mascara_conciliado
+        & ~mascara_especial
+    ].copy()
+
+    df_aba_nao_conciliados = df_conciliado[
+        ~mascara_conciliado
+        & ~mascara_especial
+    ].copy()
 
     return df_aba_conciliados, df_aba_nao_conciliados
 
@@ -423,9 +447,7 @@ def aplicar_formatacao_excel(caminho_arquivo):
             )
 
     wb.save(caminho_arquivo)
-
-
-# ============================================================
+    # ============================================================
 # FUNÇÃO PRINCIPAL DO RELATÓRIO
 # ============================================================
 
@@ -459,9 +481,6 @@ def gerar_relatorio_conciliacao(
     # =========================
     # CRIAR RESUMO COM DADOS ORIGINAIS
     # =========================
-    # Importante:
-    # O resumo deve usar os DataFrames ANTES de preparar_colunas_relatorio(),
-    # porque preparar_colunas_relatorio renomeia as colunas para o usuário final.
 
     df_resumo = criar_resumo(
         df_aba_conciliados,
@@ -473,13 +492,15 @@ def gerar_relatorio_conciliacao(
     # TOTALIZADORES DO RETORNO
     # =========================
 
-    valor_liquido_conciliado = df_aba_conciliados[
-        "valor_liquido_instituicao"
-    ].sum()
+    valor_liquido_conciliado = pd.to_numeric(
+        df_aba_conciliados["valor_liquido_instituicao"],
+        errors="coerce"
+    ).fillna(0).sum()
 
-    valor_liquido_nao_conciliado = df_aba_nao_conciliados[
-        "valor_liquido_instituicao"
-    ].sum()
+    valor_liquido_nao_conciliado = pd.to_numeric(
+        df_aba_nao_conciliados["valor_liquido_instituicao"],
+        errors="coerce"
+    ).fillna(0).sum()
 
     qtd_conciliados = len(df_aba_conciliados)
     qtd_nao_conciliados = len(df_aba_nao_conciliados)
@@ -530,12 +551,15 @@ def gerar_relatorio_conciliacao(
                 index=False
             )
 
-        # Resumo sempre como última aba
         df_resumo.to_excel(
             writer,
             sheet_name="Resumo",
             index=False
         )
+
+    # =========================
+    # PÓS-PROCESSAMENTO DO EXCEL
+    # =========================
 
     if incluir_chaves_erp:
         inserir_chaves_erp_em_blocos(caminho_saida)

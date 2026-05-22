@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.routes.conciliacao_routes import router as conciliacao_router
@@ -9,6 +10,11 @@ app = FastAPI(
     description="API para conciliação entre ERP e instituições financeiras.",
     version="1.0.0",
 )
+
+
+@app.get("/")
+def abrir_frontend():
+    return FileResponse("frontend/index.html")
 
 
 @app.get("/api/status")
@@ -27,7 +33,7 @@ app.include_router(
 
 
 app.mount(
-    "/",
-    StaticFiles(directory="frontend", html=True),
+    "/static",
+    StaticFiles(directory="frontend"),
     name="frontend"
 )

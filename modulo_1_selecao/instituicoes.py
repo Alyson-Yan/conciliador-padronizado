@@ -8,32 +8,32 @@ from modulo_3_padronizacao.credishop_padronizador import padronizar_credishop
 from modulo_4_conciliacao.motor_credishop import conciliar_credishop
 
 INSTITUICOES = {
-    "cielo": {
-        "nome": "Cielo",
-        "padronizador": padronizar_cielo,
-        "conciliador": conciliar_padronizado,
-        "formatos_aceitos": ["xlsx", "xls"],
-    },
+"cielo": {
+    "nome": "Cielo",
+    "padronizador": padronizar_cielo,
+    "conciliador": conciliar_padronizado,
+    "formatos_aceitos": ["xlsx"],
+},
 
-    "pagbank": {
-        "nome": "PagBank",
-        "padronizador": padronizar_pagbank,
-        "conciliador": conciliar_pagbank,
-        "formatos_aceitos": ["csv"],
-    },
+"pagbank": {
+    "nome": "PagBank",
+    "padronizador": padronizar_pagbank,
+    "conciliador": conciliar_pagbank,
+    "formatos_aceitos": ["csv"],
+},
 
-    "credishop": {
-        "nome": "Credishop",
-        "padronizador": padronizar_credishop,
-        "conciliador": conciliar_credishop,
-        "formatos_aceitos": ["csv"],
-    },
+"credishop": {
+    "nome": "Credishop",
+    "padronizador": padronizar_credishop,
+    "conciliador": conciliar_credishop,
+    "formatos_aceitos": ["csv"],
+},
 
-    "santander": {
+"santander": {
     "nome": "Santander",
     "padronizador": padronizar_santander,
     "conciliador": conciliar_santander,
-    "formatos_aceitos": ["xlsx", "xls"],
+    "formatos_aceitos": ["xlsx"],
 },
 }
 

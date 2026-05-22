@@ -27,6 +27,13 @@ def ler_arquivo_excel(caminho_arquivo, sheet_name=0, header=0):
 
 
 def carregar_arquivo_erp(caminho_arquivo):
+    extensao = obter_extensao(caminho_arquivo)
+
+    if extensao != "csv":
+        raise ValueError(
+            f"Formato .{extensao} não aceito para ERP. O ERP deve ser .csv."
+        )
+
     return ler_arquivo_csv(
         caminho_arquivo,
         sep=";",

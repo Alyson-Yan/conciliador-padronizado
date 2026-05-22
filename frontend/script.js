@@ -2,20 +2,88 @@ const form = document.getElementById("form-conciliacao");
 const botao = document.getElementById("botao-conciliar");
 const statusBox = document.getElementById("status");
 
+const selectInstituicao = document.getElementById("instituicao");
+const inputErp = document.getElementById("arquivo_erp");
+const inputInstituicao = document.getElementById("arquivo_instituicao");
+
+const formatosPorInstituicao = {
+    cielo: [".xlsx"],
+    santander: [".xlsx"],
+    credishop: [".csv"],
+    pagbank: [".csv"]
+};
+
 function mostrarStatus(mensagem, tipo) {
     statusBox.textContent = mensagem;
     statusBox.className = `status ${tipo}`;
 }
 
+function obterExtensao(nomeArquivo) {
+    const partes = nomeArquivo.toLowerCase().split(".");
+    return partes.length > 1 ? `.${partes.pop()}` : "";
+}
+
+function atualizarAceiteArquivoInstituicao() {
+    const instituicao = selectInstituicao.value;
+    const formatos = formatosPorInstituicao[instituicao] || [];
+
+    inputInstituicao.accept = formatos.join(",");
+    inputInstituicao.value = "";
+
+    if (!instituicao) {
+        mostrarStatus("Selecione uma instituição para saber o formato aceito.", "info");
+        return;
+    }
+
+    mostrarStatus(
+        `Formato aceito para ${instituicao}: ${formatos.join(", ")}`,
+        "info"
+    );
+}
+
+function validarArquivos(instituicao, arquivoErp, arquivoInstituicao) {
+    const extensaoErp = obterExtensao(arquivoErp.name);
+    const extensaoInstituicao = obterExtensao(arquivoInstituicao.name);
+
+    if (extensaoErp !== ".csv") {
+        return "O arquivo ERP deve ser sempre .csv.";
+    }
+
+    const formatosAceitos = formatosPorInstituicao[instituicao];
+
+    if (!formatosAceitos) {
+        return "Instituição inválida.";
+    }
+
+    if (!formatosAceitos.includes(extensaoInstituicao)) {
+        return `Arquivo inválido para ${instituicao}. Formatos aceitos: ${formatosAceitos.join(", ")}.`;
+    }
+
+    return null;
+}
+
+selectInstituicao.addEventListener("change", atualizarAceiteArquivoInstituicao);
+
 form.addEventListener("submit", async function (event) {
     event.preventDefault();
 
-    const instituicao = document.getElementById("instituicao").value;
-    const arquivoErp = document.getElementById("arquivo_erp").files[0];
-    const arquivoInstituicao = document.getElementById("arquivo_instituicao").files[0];
+    const instituicao = selectInstituicao.value;
+    const arquivoErp = inputErp.files[0];
+    const arquivoInstituicao = inputInstituicao.files[0];
 
     if (!instituicao || !arquivoErp || !arquivoInstituicao) {
         mostrarStatus("Preencha todos os campos antes de conciliar.", "erro");
+        return;
+    }
+
+    const erroValidacao = validarArquivos(
+        instituicao,
+        arquivoErp,
+        arquivoInstituicao
+    );
+
+    if (erroValidacao) {
+        mostrarStatus(erroValidacao, "erro");
         return;
     }
 
@@ -29,7 +97,7 @@ form.addEventListener("submit", async function (event) {
     mostrarStatus("Processando arquivos. Aguarde...", "info");
 
     try {
-        const resposta = await fetch("http://127.0.0.1:8000/conciliacao/executar", {
+        const resposta = await fetch("/conciliacao/executar", {
             method: "POST",
             body: formData
         });

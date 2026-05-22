@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conciliador Modular</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="container">
+        <section class="card">
+            <h1>Conciliador Modular</h1>
+            <p class="subtitulo">
+                Envie o arquivo do ERP e o arquivo da instituição para gerar o relatório de conciliação.
+            </p>
+
+            <form id="form-conciliacao">
+                <label for="instituicao">Instituição</label>
+                <select id="instituicao" name="instituicao" required>
+                    <option value="">Selecione...</option>
+                    <option value="cielo">Cielo</option>
+                    <option value="pagbank">PagBank</option>
+                    <option value="credishop">Credishop</option>
+                    <option value="santander">Santander</option>
+                </select>
+
+                <label for="arquivo_erp">Arquivo ERP</label>
+                <input
+                    type="file"
+                    id="arquivo_erp"
+                    name="arquivo_erp"
+                    accept=".csv"
+                    required
+                >
+
+                <label for="arquivo_instituicao">Arquivo da instituição</label>
+                <input
+                    type="file"
+                    id="arquivo_instituicao"
+                    name="arquivo_instituicao"
+                    accept=".csv,.xlsx,.xls"
+                    required
+                >
+
+                <button type="submit" id="botao-conciliar">
+                    Conciliar
+                </button>
+            </form>
+
+            <div id="status" class="status"></div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

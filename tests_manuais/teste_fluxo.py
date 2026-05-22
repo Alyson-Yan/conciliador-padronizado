@@ -1,20 +1,12 @@
-# ============================================================
-# TESTE DO FLUXO MODULAR DO CONCILIADOR
-# ============================================================
-# Este arquivo serve apenas para testar o fluxo completo localmente.
-#
-# Ele NÃO é a interface final do sistema.
-# Ele NÃO é o módulo de upload.
-# Ele apenas chama o core oficial do sistema e mostra um resumo.
-#
-# Fluxo executado:
-# 1. Lê os arquivos
-# 2. Padroniza ERP e instituição
-# 3. Concilia os dados
-# 4. Gera relatório
-# 5. Prepara arquivo final de download
-# 6. Valida o resultado
-# ============================================================
+import os
+import sys
+
+CAMINHO_RAIZ = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..")
+)
+
+if CAMINHO_RAIZ not in sys.path:
+    sys.path.insert(0, CAMINHO_RAIZ)
 
 from core.fluxo_conciliacao import executar_fluxo_conciliacao
 

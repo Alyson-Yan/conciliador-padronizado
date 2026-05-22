@@ -1,5 +1,13 @@
 import pandas as pd
+import os
+import sys
 
+CAMINHO_RAIZ = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..")
+)
+
+if CAMINHO_RAIZ not in sys.path:
+    sys.path.insert(0, CAMINHO_RAIZ)
 from modulo_2_upload.leitor_arquivos import carregar_arquivo_instituicao
 from modulo_3_padronizacao.credishop_padronizador import padronizar_credishop
 

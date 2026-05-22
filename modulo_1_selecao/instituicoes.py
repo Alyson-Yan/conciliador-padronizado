@@ -1,6 +1,7 @@
 from modulo_3_padronizacao.cielo_padronizador import padronizar_cielo
 from modulo_3_padronizacao.pagbank_padronizador import padronizar_pagbank
-
+from modulo_3_padronizacao.santander_padronizador import padronizar_santander
+from modulo_4_conciliacao.motor_santander import conciliar_santander
 from modulo_4_conciliacao.motor_cielo import conciliar_padronizado
 from modulo_4_conciliacao.motor_pagbank import conciliar_pagbank
 from modulo_3_padronizacao.credishop_padronizador import padronizar_credishop
@@ -27,6 +28,13 @@ INSTITUICOES = {
         "conciliador": conciliar_credishop,
         "formatos_aceitos": ["csv"],
     },
+
+    "santander": {
+    "nome": "Santander",
+    "padronizador": padronizar_santander,
+    "conciliador": conciliar_santander,
+    "formatos_aceitos": ["xlsx", "xls"],
+},
 }
 
 

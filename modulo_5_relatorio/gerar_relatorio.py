@@ -50,9 +50,8 @@ def separar_conciliados(df_conciliado):
     df_aba_conciliados = df_conciliado[mascara_conciliado].copy()
     df_aba_nao_conciliados = df_conciliado[~mascara_conciliado].copy()
 
-    # Mantém o comportamento do código original da CredShop:
-    # aluguel e estorno NÃO ficam na aba "Não conciliados".
-    # Eles continuam indo para abas especiais.
+    # Casos especiais não devem ficar na aba "Não conciliados".
+    # Eles vão para abas próprias.
     if "tipo_lancamento_instituicao" in df_aba_nao_conciliados.columns:
         tipo_lancamento = (
             df_aba_nao_conciliados["tipo_lancamento_instituicao"]
@@ -60,18 +59,16 @@ def separar_conciliados(df_conciliado):
             .str.lower()
         )
 
-        df_aba_nao_conciliados = df_aba_nao_conciliados[
-            ~tipo_lancamento.str.contains("aluguel", na=False)
-        ].copy()
-
-        tipo_lancamento = (
-            df_aba_nao_conciliados["tipo_lancamento_instituicao"]
-            .astype(str)
-            .str.lower()
+        mascara_especial = (
+            tipo_lancamento.str.contains("aluguel", na=False)
+            | tipo_lancamento.str.contains("tarifa", na=False)
+            | tipo_lancamento.str.contains("estorno", na=False)
+            | tipo_lancamento.str.contains("cancelamento", na=False)
+            | tipo_lancamento.str.contains("chargeback", na=False)
         )
 
         df_aba_nao_conciliados = df_aba_nao_conciliados[
-            ~tipo_lancamento.str.contains("estorno", na=False)
+            ~mascara_especial
         ].copy()
 
     return df_aba_conciliados, df_aba_nao_conciliados
@@ -85,47 +82,134 @@ def calcular_totais(df):
     }
 
 
-def criar_resumo(df_conciliado, df_aba_conciliados, df_aba_nao_conciliados):
-    totais_gerais = calcular_totais(df_conciliado)
-    totais_conciliados = calcular_totais(df_aba_conciliados)
-    totais_nao_conciliados = calcular_totais(df_aba_nao_conciliados)
+def criar_resumo(df_conciliados, df_nao_conciliados, abas_especiais=None):
+    if not isinstance(abas_especiais, dict):
+        abas_especiais = {}
 
-    relatorio_linhas = [
+    totais_conciliados = calcular_totais_dataframe(df_conciliados)
+    totais_nao_conciliados = calcular_totais_dataframe(df_nao_conciliados)
+
+    totais_especiais = {}
+
+    for nome_aba, df_especial in abas_especiais.items():
+        if isinstance(df_especial, pd.DataFrame):
+            totais_especiais[nome_aba] = calcular_totais_dataframe(df_especial)
+
+    valor_liquido_total_geral = (
+        totais_conciliados["valor_liquido"]
+        + totais_nao_conciliados["valor_liquido"]
+        + sum(total["valor_liquido"] for total in totais_especiais.values())
+    )
+
+    valor_bruto_total_geral = (
+        totais_conciliados["valor_bruto"]
+        + totais_nao_conciliados["valor_bruto"]
+        + sum(total["valor_bruto"] for total in totais_especiais.values())
+    )
+
+    quantidade_total_geral = (
+        totais_conciliados["quantidade"]
+        + totais_nao_conciliados["quantidade"]
+        + sum(total["quantidade"] for total in totais_especiais.values())
+    )
+
+    linhas_resumo = [
         ["RELATORIO DE CONCILIACAO", "", ""],
-
         ["", "", ""],
+
         ["TOTAL GERAL", "", ""],
-        ["Valor liquido total geral", "", totais_gerais["valor_liquido"]],
-        ["Valor bruto total geral", "", totais_gerais["valor_bruto"]],
-        ["Quantidade total de titulos", "", totais_gerais["quantidade"]],
-
+        ["Valor liquido total geral", "", valor_liquido_total_geral],
+        ["Valor bruto total geral", "", valor_bruto_total_geral],
+        ["Quantidade total de titulos", "", quantidade_total_geral],
         ["", "", ""],
+
         ["CONCILIADOS", "", ""],
         ["Valor liquido total", "", totais_conciliados["valor_liquido"]],
         ["Valor bruto total", "", totais_conciliados["valor_bruto"]],
         ["Quantidade de titulos", "", totais_conciliados["quantidade"]],
-
         ["", "", ""],
+
         ["NAO CONCILIADOS", "", ""],
         ["Valor liquido total", "", totais_nao_conciliados["valor_liquido"]],
         ["Valor bruto total", "", totais_nao_conciliados["valor_bruto"]],
         ["Quantidade de titulos", "", totais_nao_conciliados["quantidade"]],
+        ["", "", ""],
     ]
 
+    for nome_aba, totais in totais_especiais.items():
+        linhas_resumo.extend([
+            [nome_aba.upper(), "", ""],
+            ["Valor liquido total", "", totais["valor_liquido"]],
+            ["Valor bruto total", "", totais["valor_bruto"]],
+            ["Quantidade de titulos", "", totais["quantidade"]],
+            ["", "", ""],
+        ])
+
     return pd.DataFrame(
-        relatorio_linhas,
+        linhas_resumo,
         columns=["categoria", "descricao", "valor"]
     )
 
+    
+def calcular_totais_dataframe(df):
+    total_liquido = 0
+    total_bruto = 0
+    quantidade = 0
+
+    if df is None:
+        return {
+            "valor_liquido": 0,
+            "valor_bruto": 0,
+            "quantidade": 0,
+        }
+        
+
+    # Se vier uma Series por engano, transforma em DataFrame com 1 linha.
+    if isinstance(df, pd.Series):
+        df = df.to_frame().T
+
+    if not isinstance(df, pd.DataFrame):
+        return {
+            "valor_liquido": 0,
+            "valor_bruto": 0,
+            "quantidade": 0,
+        }
+
+    if df.empty:
+        return {
+            "valor_liquido": 0,
+            "valor_bruto": 0,
+            "quantidade": 0,
+        }
+
+    if "valor_liquido_instituicao" in df.columns:
+        total_liquido = pd.to_numeric(
+            df["valor_liquido_instituicao"],
+            errors="coerce"
+        ).fillna(0).sum()
+
+    if "valor_bruto_instituicao" in df.columns:
+        total_bruto = pd.to_numeric(
+            df["valor_bruto_instituicao"],
+            errors="coerce"
+        ).fillna(0).sum()
+
+    quantidade = len(df)
+
+    return {
+        "valor_liquido": total_liquido,
+        "valor_bruto": total_bruto,
+        "quantidade": quantidade,
+    }
 # ============================================================
 # ABAS ESPECIAIS
 # ============================================================
 
 def criar_abas_especiais(df_conciliado):
-    abas = {}
+    abas_especiais = {}
 
     if "tipo_lancamento_instituicao" not in df_conciliado.columns:
-        return abas
+        return abas_especiais
 
     tipo_lancamento = (
         df_conciliado["tipo_lancamento_instituicao"]
@@ -133,21 +217,30 @@ def criar_abas_especiais(df_conciliado):
         .str.lower()
     )
 
+    df_cancelamentos = df_conciliado[
+        tipo_lancamento.str.contains("cancelamento", na=False)
+        | tipo_lancamento.str.contains("chargeback", na=False)
+    ].copy()
+
+    if not df_cancelamentos.empty:
+        abas_especiais["Cancelamentos"] = df_cancelamentos
+
     df_aluguel = df_conciliado[
         tipo_lancamento.str.contains("aluguel", na=False)
+        | tipo_lancamento.str.contains("tarifa", na=False)
     ].copy()
+
+    if not df_aluguel.empty:
+        abas_especiais["Aluguel e Tarifas"] = df_aluguel
 
     df_estornos = df_conciliado[
         tipo_lancamento.str.contains("estorno", na=False)
     ].copy()
 
-    if not df_aluguel.empty:
-        abas["Aluguel de máquina"] = df_aluguel
-
     if not df_estornos.empty:
-        abas["Estornos"] = df_estornos
+        abas_especiais["Estornos"] = df_estornos
 
-    return abas
+    return abas_especiais
 
 
 # ============================================================
@@ -346,15 +439,39 @@ def gerar_relatorio_conciliacao(
 ):
     df_conciliado = df_conciliado.copy()
 
+    # =========================
+    # SEPARAR ABAS PRINCIPAIS
+    # =========================
+
     df_aba_conciliados, df_aba_nao_conciliados = separar_conciliados(
         df_conciliado
     )
 
+    # =========================
+    # CRIAR ABAS ESPECIAIS
+    # =========================
+
+    if incluir_abas_especiais:
+        abas_especiais = criar_abas_especiais(df_conciliado)
+    else:
+        abas_especiais = {}
+
+    # =========================
+    # CRIAR RESUMO COM DADOS ORIGINAIS
+    # =========================
+    # Importante:
+    # O resumo deve usar os DataFrames ANTES de preparar_colunas_relatorio(),
+    # porque preparar_colunas_relatorio renomeia as colunas para o usuário final.
+
     df_resumo = criar_resumo(
-        df_conciliado,
         df_aba_conciliados,
-        df_aba_nao_conciliados
+        df_aba_nao_conciliados,
+        abas_especiais
     )
+
+    # =========================
+    # TOTALIZADORES DO RETORNO
+    # =========================
 
     valor_liquido_conciliado = df_aba_conciliados[
         "valor_liquido_instituicao"
@@ -367,43 +484,51 @@ def gerar_relatorio_conciliacao(
     qtd_conciliados = len(df_aba_conciliados)
     qtd_nao_conciliados = len(df_aba_nao_conciliados)
 
-    df_aba_conciliados = preparar_colunas_relatorio(
+    # =========================
+    # FORMATAR ABAS PARA USUÁRIO FINAL
+    # =========================
+
+    df_aba_conciliados_formatado = preparar_colunas_relatorio(
         df_aba_conciliados,
         instituicao
     )
 
-    df_aba_nao_conciliados = preparar_colunas_relatorio(
+    df_aba_nao_conciliados_formatado = preparar_colunas_relatorio(
         df_aba_nao_conciliados,
         instituicao
     )
 
+    abas_especiais_formatadas = {}
+
+    for nome_aba, df_aba in abas_especiais.items():
+        abas_especiais_formatadas[nome_aba] = preparar_colunas_relatorio(
+            df_aba,
+            instituicao
+        )
+
+    # =========================
+    # ESCREVER EXCEL
+    # =========================
+
     with pd.ExcelWriter(caminho_saida, engine="openpyxl") as writer:
-        df_aba_conciliados.to_excel(
+        df_aba_conciliados_formatado.to_excel(
             writer,
             sheet_name="Conciliados",
             index=False
         )
 
-        df_aba_nao_conciliados.to_excel(
+        df_aba_nao_conciliados_formatado.to_excel(
             writer,
             sheet_name="Não conciliados",
             index=False
         )
 
-        if incluir_abas_especiais:
-            abas_especiais = criar_abas_especiais(df_conciliado)
-
-            for nome_aba, df_aba in abas_especiais.items():
-                df_aba = preparar_colunas_relatorio(
-                    df_aba,
-                    instituicao
-                )
-
-                df_aba.to_excel(
-                    writer,
-                    sheet_name=nome_aba,
-                    index=False
-                )
+        for nome_aba, df_aba_formatada in abas_especiais_formatadas.items():
+            df_aba_formatada.to_excel(
+                writer,
+                sheet_name=nome_aba,
+                index=False
+            )
 
         # Resumo sempre como última aba
         df_resumo.to_excel(

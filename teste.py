@@ -32,7 +32,7 @@ from core.fluxo_conciliacao import executar_fluxo_conciliacao
 # então ela NÃO deve ser testada aqui enquanto não tiver motor.
 # ============================================================
 
-INSTITUICAO = "cielo"
+INSTITUICAO = "santander"
 
 PASTA_SAIDA = r"C:\Users\yan.fernandes\Desktop\conciliador\saida_testes"
 
@@ -69,6 +69,15 @@ CONFIG_TESTES = {
             
         ),
     },
+
+"santander": {
+    "caminho_erp": (
+        r"C:\Users\yan.fernandes\Documents\Conciliador PROD\conciliação santander\Análise de Titulos de Cartão de Terceiros - SFR.csv"
+    ),
+    "caminho_instituicao": (
+        r"C:\Users\yan.fernandes\Documents\Conciliador PROD\conciliação santander\Recebivel_Completos_9784485_20250101_20250131_17b71b847b834144add843c70f2feea1.xlsx"
+    ),
+},
 }
 
 

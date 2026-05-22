@@ -24,7 +24,7 @@ from core.fluxo_conciliacao import executar_fluxo_conciliacao
 # então ela NÃO deve ser testada aqui enquanto não tiver motor.
 # ============================================================
 
-INSTITUICAO = "credishop"  # <-- Mude aqui para testar outra instituição
+INSTITUICAO = "cielo"  # <-- Mude aqui para testar outra instituição
 
 PASTA_SAIDA = r"C:\Users\yan.fernandes\Desktop\conciliador\saida_testes"
 

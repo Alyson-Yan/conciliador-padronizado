@@ -69,82 +69,82 @@ COLUNAS_INSTITUICAO_PADRAO = [
 
 MAPEAMENTO_CIELO = {
     # Datas principais
-    "Data de pagamento": "data_pagamento_instituicao",
-    "Data do lan�amento": "data_lancamento_instituicao",
-    "Data do lançamento": "data_lancamento_instituicao",
-    "Data da venda": "data_venda_instituicao",
-    "Hora da venda": "hora_venda_instituicao",
-    "Data prevista de pagamento": "data_vencimento_instituicao",
+    "data de pagamento": "data_pagamento_instituicao",
+    "data do lançamento": "data_lancamento_instituicao",
+    "data do lan�amento": "data_lancamento_instituicao",
+    "data da venda": "data_venda_instituicao",
+    "hora da venda": "hora_venda_instituicao",
+    "data prevista de pagamento": "data_vencimento_instituicao",
 
     # Identificação da venda
-    "Estabelecimento": "estabelecimento_instituicao",
-    "Tipo de lan�amento": "tipo_lancamento_instituicao",
-    "Tipo de lançamento": "tipo_lancamento_instituicao",
-    "Forma de pagamento": "forma_pagamento_instituicao",
-    "Bandeira": "bandeira_instituicao",
-    "Modalidade": "modalidade_instituicao",
-    "Tipo de captura": "tipo_captura_instituicao",
-    "Canal da venda": "canal_venda_instituicao",
-    "Status de pagamento": "status_pagamento_instituicao",
+    "estabelecimento": "estabelecimento_instituicao",
+    "tipo de lançamento": "tipo_lancamento_instituicao",
+    "tipo de lan�amento": "tipo_lancamento_instituicao",
+    "forma de pagamento": "forma_pagamento_instituicao",
+    "bandeira": "bandeira_instituicao",
+    "modalidade": "modalidade_instituicao",
+    "tipo de captura": "tipo_captura_instituicao",
+    "canal da venda": "canal_venda_instituicao",
+    "status de pagamento": "status_pagamento_instituicao",
 
     # Valores
-    "Valor bruto": "valor_bruto_instituicao",
-    "Taxa/tarifa": "taxa_tarifa_instituicao",
-    "Valor l�quido": "valor_liquido_instituicao",
-    "Valor líquido": "valor_liquido_instituicao",
-    "Taxa total (%)": "taxa_total_percentual_instituicao",
-    "Taxa administrativa (MDR) (%)": "taxa_administrativa_percentual_instituicao",
-    "Taxa de recebimento autom�tico (%)": "taxa_recebimento_automatico_percentual_instituicao",
-    "Taxa de recebimento automático (%)": "taxa_recebimento_automatico_percentual_instituicao",
-    "Valor da taxa administrativa (MDR)": "valor_taxa_administrativa_instituicao",
-    "Valor da taxa de recebimento autom�tico": "valor_taxa_recebimento_automatico_instituicao",
-    "Valor da taxa de recebimento automático": "valor_taxa_recebimento_automatico_instituicao",
-    "Valor do saque": "valor_saque_instituicao",
-    "Valor do troco": "valor_troco_instituicao",
-    "Valor total da transa��o": "valor_total_transacao_instituicao",
-    "Valor total da transação": "valor_total_transacao_instituicao",
+    "valor bruto": "valor_bruto_instituicao",
+    "taxa/tarifa": "taxa_tarifa_instituicao",
+    "valor líquido": "valor_liquido_instituicao",
+    "valor l�quido": "valor_liquido_instituicao",
+    "taxa total (%)": "taxa_total_percentual_instituicao",
+    "taxa administrativa (mdr) (%)": "taxa_administrativa_percentual_instituicao",
+    "taxa de recebimento automático (%)": "taxa_recebimento_automatico_percentual_instituicao",
+    "taxa de recebimento autom�tico (%)": "taxa_recebimento_automatico_percentual_instituicao",
+    "valor da taxa administrativa (mdr)": "valor_taxa_administrativa_instituicao",
+    "valor da taxa de recebimento automático": "valor_taxa_recebimento_automatico_instituicao",
+    "valor da taxa de recebimento autom�tico": "valor_taxa_recebimento_automatico_instituicao",
+    "valor do saque": "valor_saque_instituicao",
+    "valor do troco": "valor_troco_instituicao",
+    "valor total da transação": "valor_total_transacao_instituicao",
+    "valor total da transa��o": "valor_total_transacao_instituicao",
 
     # Códigos de conciliação
-    "C�digo da autoriza��o": "autorizacao_instituicao",
-    "Código da autorização": "autorizacao_instituicao",
-    "NSU/DOC": "nsu_instituicao",
-    "C�digo da venda": "codigo_venda_instituicao",
-    "Código da venda": "codigo_venda_instituicao",
-    "TID": "tid_instituicao",
-    "ID Pix": "id_pix_instituicao",
-    "TxID": "txid_instituicao",
-    "C�digo da chave UR": "codigo_chave_ur_instituicao",
-    "Código da chave UR": "codigo_chave_ur_instituicao",
+    "código da autorização": "autorizacao_instituicao",
+    "c�digo da autoriza��o": "autorizacao_instituicao",
+    "nsu/doc": "nsu_instituicao",
+    "código da venda": "codigo_venda_instituicao",
+    "c�digo da venda": "codigo_venda_instituicao",
+    "tid": "tid_instituicao",
+    "id pix": "id_pix_instituicao",
+    "txid": "txid_instituicao",
+    "código da chave ur": "codigo_chave_ur_instituicao",
+    "c�digo da chave ur": "codigo_chave_ur_instituicao",
 
     # Cartão / pedido / lote
-    "N�mero do cart�o": "numero_cartao_instituicao",
-    "Número do cartão": "numero_cartao_instituicao",
-    "Origem do cart�o": "origem_cartao_instituicao",
-    "Origem do cartão": "origem_cartao_instituicao",
-    "N�mero do lote": "numero_lote_instituicao",
-    "Número do lote": "numero_lote_instituicao",
+    "número do cartão": "numero_cartao_instituicao",
+    "n�mero do cart�o": "numero_cartao_instituicao",
+    "origem do cartão": "origem_cartao_instituicao",
+    "origem do cart�o": "origem_cartao_instituicao",
+    "número do lote": "numero_lote_instituicao",
+    "n�mero do lote": "numero_lote_instituicao",
 
     # Parcelamento
-    "N�mero da parcela": "parcela_instituicao",
-    "Número da parcela": "parcela_instituicao",
-    "Quantidade total de parcelas": "total_parcelas_instituicao",
+    "número da parcela": "parcela_instituicao",
+    "n�mero da parcela": "parcela_instituicao",
+    "quantidade total de parcelas": "total_parcelas_instituicao",
 
     # Máquina / referência
-    "N�mero da m�quina": "maquininha_instituicao",
-    "Número da máquina": "maquininha_instituicao",
-    "Total de dias cobrados": "total_dias_cobrados_instituicao",
-    "Quantidade de Pinpads": "quantidade_pinpads_instituicao",
+    "número da máquina": "maquininha_instituicao",
+    "n�mero da m�quina": "maquininha_instituicao",
+    "total de dias cobrados": "total_dias_cobrados_instituicao",
+    "quantidade de pinpads": "quantidade_pinpads_instituicao",
 
     # Dados bancários
-    "Banco": "banco_instituicao",
-    "Ag�ncia": "agencia_instituicao",
-    "Agência": "agencia_instituicao",
-    "Conta": "conta_instituicao",
+    "banco": "banco_instituicao",
+    "agência": "agencia_instituicao",
+    "ag�ncia": "agencia_instituicao",
+    "conta": "conta_instituicao",
 }
 
 
 def normalizar_coluna(coluna):
-    return str(coluna).strip()
+    return str(coluna).strip().lower()
 
 
 def converter_valor_monetario(valor):
@@ -191,7 +191,12 @@ def converter_data(valor):
     if pd.isna(valor):
         return pd.NaT
 
-    return pd.to_datetime(valor, dayfirst=True, errors="coerce").normalize()
+    data = pd.to_datetime(valor, dayfirst=True, errors="coerce")
+
+    if pd.isna(data):
+        return pd.NaT
+
+    return data.normalize()
 
 
 def limpar_texto(valor):
@@ -224,8 +229,9 @@ def limpar_identificador(valor):
 def preparar_cabecalho_cielo(df_cielo_bruto):
     df = df_cielo_bruto.copy()
 
-    # Linha 10 no Excel = índice 9 no pandas
-    df = df.iloc[9:].reset_index(drop=True)
+    # No arquivo original da Cielo, o cabeçalho real fica na linha 9 do Excel.
+    # No pandas, isso corresponde ao índice 8.
+    df = df.iloc[8:].reset_index(drop=True)
     df.columns = df.iloc[0]
     df = df[1:].reset_index(drop=True)
 

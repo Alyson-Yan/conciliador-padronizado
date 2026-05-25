@@ -4,47 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conciliador Modular</title>
-
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <main class="container">
+    <main class="page">
         <section class="card">
-            <h1>Conciliador Modular</h1>
-            <p class="subtitulo">
-                Envie o arquivo do ERP e o arquivo da instituição para gerar o relatório de conciliação.
-            </p>
+            <header class="header">
+                <div>
+                    <p class="tag">Conciliação financeira</p>
+                    <h1>Conciliador Modular</h1>
+                    <p class="subtitle">
+                        Selecione a instituição e envie os arquivos para gerar o relatório.
+                    </p>
+                </div>
+
+                <span class="api-status">API ativa</span>
+            </header>
+
+            <section class="institution-section">
+                <p class="label">Instituição</p>
+
+                <div class="institution-options">
+                    <button type="button" class="institution-btn" data-instituicao="cielo">
+                        Cielo
+                    </button>
+
+                    <button type="button" class="institution-btn" data-instituicao="santander">
+                        Santander
+                    </button>
+
+                    <button type="button" class="institution-btn" data-instituicao="pagbank">
+                        PagBank
+                    </button>
+
+                    <button type="button" class="institution-btn" data-instituicao="credishop">
+                        CredShop
+                    </button>
+                </div>
+            </section>
+
+            <section class="selected-box" id="selected-box">
+                <strong id="selected-name">Nenhuma instituição selecionada</strong>
+                <span id="selected-format">Escolha uma instituição para continuar.</span>
+            </section>
 
             <form id="form-conciliacao">
-                <label for="instituicao">Instituição</label>
-                <select id="instituicao" name="instituicao" required>
-                    <option value="">Selecione...</option>
-                    <option value="cielo">Cielo</option>
-                    <option value="pagbank">PagBank</option>
-                    <option value="credishop">Credishop</option>
-                    <option value="santander">Santander</option>
-                </select>
+                <input type="hidden" id="instituicao" name="instituicao">
 
-                <label for="arquivo_erp">Arquivo ERP</label>
-                <input
-                    type="file"
-                    id="arquivo_erp"
-                    name="arquivo_erp"
-                    accept=".csv"
-                    required
-                >
+                <div class="field">
+                    <label for="arquivo_erp">Arquivo ERP</label>
+                    <input
+                        type="file"
+                        id="arquivo_erp"
+                        name="arquivo_erp"
+                        accept=".csv"
+                        required
+                    >
+                </div>
 
-                <label for="arquivo_instituicao">Arquivo da instituição</label>
-                <input
-                    type="file"
-                    id="arquivo_instituicao"
-                    name="arquivo_instituicao"
-                    accept=".csv,.xlsx,.xls"
-                    required
-                >
+                <div class="field">
+                    <label for="arquivo_instituicao" id="label-instituicao">
+                        Arquivo da instituição
+                    </label>
+                    <input
+                        type="file"
+                        id="arquivo_instituicao"
+                        name="arquivo_instituicao"
+                        required
+                    >
+                </div>
 
-                <button type="submit" id="botao-conciliar">
-                    Conciliar
+                <button type="submit" id="botao-conciliar" disabled>
+                    Conciliar e baixar relatório
                 </button>
             </form>
 

@@ -29,10 +29,6 @@ def salvar_upload(arquivo, prefixo):
 
 
 def executar_conciliacao_web(instituicao, arquivo_erp, arquivo_instituicao):
-    print("\n================ DEBUG WEB ================")
-    print(f"Instituicao recebida: {instituicao}")
-    print(f"Arquivo ERP recebido: {arquivo_erp.filename}")
-    print(f"Arquivo instituicao recebido: {arquivo_instituicao.filename}")
 
     caminho_erp = salvar_upload(
         arquivo=arquivo_erp,
@@ -44,8 +40,6 @@ def executar_conciliacao_web(instituicao, arquivo_erp, arquivo_instituicao):
         prefixo=instituicao
     )
 
-    print(f"Caminho ERP salvo: {caminho_erp}")
-    print(f"Caminho instituicao salvo: {caminho_instituicao}")
 
     resultado = executar_fluxo_conciliacao(
         instituicao=instituicao,
@@ -54,22 +48,5 @@ def executar_conciliacao_web(instituicao, arquivo_erp, arquivo_instituicao):
         pasta_saida=PASTA_SAIDA,
         salvar_intermediarios=True,
     )
-
-    print("\n================ RESULTADO WEB ================")
-
-    print("ERP padronizado:")
-    print(resultado["df_erp_padronizado"].shape)
-
-    print("Instituicao padronizada:")
-    print(resultado["df_instituicao_padronizado"].shape)
-
-    print("Conciliação:")
-    print(resultado["df_conciliado"]["status_conciliacao"].value_counts(dropna=False))
-
-    print("Relatório:")
-    print(resultado["relatorio"])
-
-    print("Download:")
-    print(resultado["download"])
 
     return resultado

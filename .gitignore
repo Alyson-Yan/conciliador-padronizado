@@ -1,17 +1,17 @@
 __pycache__/
 *.pyc
 
+.venv/
+venv/
+
+temp_uploads/
+saida/
 saida_testes/
+
 *.xlsx
 *.xls
 
 .env
-.venv/
-venv/
 
 .DS_Store
 Thumbs.db
-
-temp_uploads/
-saida_testes/
-*.xlsx

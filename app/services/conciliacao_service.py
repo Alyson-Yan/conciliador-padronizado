@@ -6,8 +6,7 @@ from core.fluxo_conciliacao import executar_fluxo_conciliacao
 
 
 PASTA_TEMP = "temp_uploads"
-PASTA_SAIDA = "saida_testes"
-
+PASTA_SAIDA = "saida"
 
 def garantir_pastas():
     os.makedirs(PASTA_TEMP, exist_ok=True)
@@ -46,7 +45,7 @@ def executar_conciliacao_web(instituicao, arquivo_erp, arquivo_instituicao):
         caminho_erp=caminho_erp,
         caminho_instituicao=caminho_instituicao,
         pasta_saida=PASTA_SAIDA,
-        salvar_intermediarios=True,
+        salvar_intermediarios=False,
     )
 
     return resultado

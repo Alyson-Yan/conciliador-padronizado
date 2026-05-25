@@ -77,7 +77,6 @@ def carregar_arquivo_instituicao(caminho_arquivo, instituicao):
 
     if extensao in ["xlsx", "xls"]:
         if instituicao == "santander":
-            print("DEBUG: lendo Santander com sheet_name='Detalhado' e header=None")
 
             return ler_arquivo_excel(
                 caminho_arquivo,

@@ -23,7 +23,7 @@ const instituicoes = {
         fundoPrimario: "rgba(37, 99, 235, 0.18)",
         fundoSecundario: "rgba(37, 99, 235, 0.08)"
     },
-    santander: {
+    GetNet: {
         nome: "GetNet",
         formato: ".xlsx",
         cor: "#16a34a",

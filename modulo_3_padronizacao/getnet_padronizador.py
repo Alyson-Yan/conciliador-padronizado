@@ -56,7 +56,7 @@ COLUNAS_INSTITUICAO_PADRAO = [
 ]
 
 
-COLUNAS_ORIGINAIS_SANTANDER = [
+COLUNAS_ORIGINAIS_GetNet = [
     "EC CENTRALIZADOR",
     "DATA DE VENCIMENTO",
     "TIPO DE LANÇAMENTO",
@@ -129,11 +129,11 @@ def converter_valor(valor):
         return pd.NA
 
 
-def preparar_arquivo_santander(df_santander_bruto):
-    df = df_santander_bruto.copy()
+def preparar_arquivo_GetNet(df_GetNet_bruto):
+    df = df_GetNet_bruto.copy()
 
     # Procura dinamicamente a linha do cabeçalho real.
-    # No Santander, essa linha contém "EC CENTRALIZADOR".
+    # No GetNet, essa linha contém "EC CENTRALIZADOR".
     indice_cabecalho = None
 
     for indice, linha in df.iterrows():
@@ -144,7 +144,7 @@ def preparar_arquivo_santander(df_santander_bruto):
             break
 
     if indice_cabecalho is None:
-        raise ValueError("Cabeçalho do Santander não encontrado: EC CENTRALIZADOR")
+        raise ValueError("Cabeçalho do GetNet não encontrado: EC CENTRALIZADOR")
 
     # Define a linha encontrada como cabeçalho
     df.columns = df.iloc[indice_cabecalho]
@@ -163,17 +163,17 @@ def preparar_arquivo_santander(df_santander_bruto):
 
     # Mantém apenas as colunas necessárias
     colunas_existentes = [
-        coluna for coluna in COLUNAS_ORIGINAIS_SANTANDER
+        coluna for coluna in COLUNAS_ORIGINAIS_GetNet
         if coluna in df.columns
     ]
 
     colunas_faltando = [
-        coluna for coluna in COLUNAS_ORIGINAIS_SANTANDER
+        coluna for coluna in COLUNAS_ORIGINAIS_GetNet
         if coluna not in df.columns
     ]
 
     if colunas_faltando:
-        print("\nATENCAO: colunas Santander faltando:")
+        print("\nATENCAO: colunas GetNet faltando:")
         for coluna in colunas_faltando:
             print(f"- {coluna}")
 
@@ -216,8 +216,8 @@ def separar_bandeira_modalidade(valor):
     return texto, texto
 
 
-def padronizar_santander(df_santander_bruto):
-    df = preparar_arquivo_santander(df_santander_bruto)
+def padronizar_GetNet(df_GetNet_bruto):
+    df = preparar_arquivo_GetNet(df_GetNet_bruto)
 
     # Remove linhas que não representam venda nem evento financeiro útil.
     # "Total Recebido" aparece como linha de subtotal e vem com tipo vazio.

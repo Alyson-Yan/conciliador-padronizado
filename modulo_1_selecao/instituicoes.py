@@ -1,40 +1,42 @@
 from modulo_3_padronizacao.cielo_padronizador import padronizar_cielo
 from modulo_3_padronizacao.pagbank_padronizador import padronizar_pagbank
-from modulo_3_padronizacao.santander_padronizador import padronizar_santander
-from modulo_4_conciliacao.motor_santander import conciliar_santander
+from modulo_3_padronizacao.getnet_padronizador import padronizar_getnet
+from modulo_3_padronizacao.credishop_padronizador import padronizar_credishop
+
 from modulo_4_conciliacao.motor_cielo import conciliar_padronizado
 from modulo_4_conciliacao.motor_pagbank import conciliar_pagbank
-from modulo_3_padronizacao.credishop_padronizador import padronizar_credishop
+from modulo_4_conciliacao.motor_getnet import conciliar_getnet
 from modulo_4_conciliacao.motor_credishop import conciliar_credishop
 
+
 INSTITUICOES = {
-"cielo": {
-    "nome": "Cielo",
-    "padronizador": padronizar_cielo,
-    "conciliador": conciliar_padronizado,
-    "formatos_aceitos": ["xlsx"],
-},
+    "cielo": {
+        "nome": "Cielo",
+        "padronizador": padronizar_cielo,
+        "conciliador": conciliar_padronizado,
+        "formatos_aceitos": ["xlsx"],
+    },
 
-"pagbank": {
-    "nome": "PagBank",
-    "padronizador": padronizar_pagbank,
-    "conciliador": conciliar_pagbank,
-    "formatos_aceitos": ["csv"],
-},
+    "pagbank": {
+        "nome": "PagBank",
+        "padronizador": padronizar_pagbank,
+        "conciliador": conciliar_pagbank,
+        "formatos_aceitos": ["csv"],
+    },
 
-"credishop": {
-    "nome": "Credishop",
-    "padronizador": padronizar_credishop,
-    "conciliador": conciliar_credishop,
-    "formatos_aceitos": ["csv"],
-},
+    "credishop": {
+        "nome": "Credishop",
+        "padronizador": padronizar_credishop,
+        "conciliador": conciliar_credishop,
+        "formatos_aceitos": ["csv"],
+    },
 
-"santander": {
-    "nome": "Santander",
-    "padronizador": padronizar_santander,
-    "conciliador": conciliar_santander,
-    "formatos_aceitos": ["xlsx"],
-},
+    "getnet": {
+        "nome": "GetNet",
+        "padronizador": padronizar_getnet,
+        "conciliador": conciliar_getnet,
+        "formatos_aceitos": ["xlsx"],
+    },
 }
 
 

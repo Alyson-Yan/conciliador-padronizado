@@ -236,7 +236,7 @@ def padronizar_santander(df_santander_bruto):
 
     df_padronizado = pd.DataFrame(index=df.index)
 
-    df_padronizado["instituicao"] = "santander"
+    df_padronizado["instituicao"] = "GetNet"
 
     df_padronizado["data_pagamento_instituicao"] = df["DATA DE VENCIMENTO"].apply(converter_data)
     df_padronizado["data_lancamento_instituicao"] = pd.NaT

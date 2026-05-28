@@ -76,7 +76,7 @@ def carregar_arquivo_instituicao(caminho_arquivo, instituicao):
         )
 
     if extensao in ["xlsx", "xls"]:
-        if instituicao == "santander":
+        if instituicao == "GetNet":
 
             return ler_arquivo_excel(
                 caminho_arquivo,

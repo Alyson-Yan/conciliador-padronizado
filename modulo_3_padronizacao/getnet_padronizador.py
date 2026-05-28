@@ -216,8 +216,8 @@ def separar_bandeira_modalidade(valor):
     return texto, texto
 
 
-def padronizar_GetNet(df_GetNet_bruto):
-    df = preparar_arquivo_GetNet(df_GetNet_bruto)
+def padronizar_getnet(df_getnet_bruto):
+    df = preparar_arquivo_getnet(df_getnet_bruto)
 
     # Remove linhas que não representam venda nem evento financeiro útil.
     # "Total Recebido" aparece como linha de subtotal e vem com tipo vazio.

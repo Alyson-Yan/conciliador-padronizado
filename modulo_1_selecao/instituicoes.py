@@ -31,7 +31,7 @@ INSTITUICOES = {
         "formatos_aceitos": ["csv"],
     },
 
-    "GetNet": {
+    "getnet": {
         "nome": "GetNet",
         "padronizador": padronizar_getnet,
         "conciliador": conciliar_getnet,

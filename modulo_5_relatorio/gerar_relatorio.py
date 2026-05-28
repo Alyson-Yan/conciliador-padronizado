@@ -15,7 +15,6 @@ COLUNAS_RELATORIO_PADRAO = [
     "valor_liquido_erp",
     "chave_erp",
     "data_emissao_erp",
-    "cliente_erp",
 
     "instituicao",
     "valor_bruto_instituicao",
@@ -279,7 +278,6 @@ def nome_coluna_relatorio(coluna, instituicao):
         "valor_liquido_erp": "valor liquido erp",
         "chave_erp": "chave erp",
         "data_emissao_erp": "data transacao erp",
-        "cliente_erp": "pessoa do titulo",
 
         "instituicao": "instituicao financeira",
 
@@ -348,23 +346,58 @@ def inserir_chaves_erp_em_blocos(caminho_arquivo):
 
     header = [cell.value for cell in ws_conciliados[1]]
 
-    if "chave erp" not in header:
-        wb.save(caminho_arquivo)
-        return
+    colunas_obrigatorias = [
+        "chave erp",
+        "valor bruto erp",
+        "valor liquido erp",
+    ]
+
+    for coluna in colunas_obrigatorias:
+        if coluna not in header:
+            wb.save(caminho_arquivo)
+            return
 
     indice_chave = header.index("chave erp") + 1
+    indice_valor_bruto = header.index("valor bruto erp") + 1
+    indice_valor_liquido = header.index("valor liquido erp") + 1
 
-    chaves = []
+    registros = []
 
     for row in range(2, ws_conciliados.max_row + 1):
-        valor = ws_conciliados.cell(row=row, column=indice_chave).value
+        chave = ws_conciliados.cell(row=row, column=indice_chave).value
 
-        if valor is not None and str(valor).strip() != "":
-            chaves.append(str(valor))
+        if chave is None or str(chave).strip() == "":
+            continue
+
+        valor_bruto = ws_conciliados.cell(
+            row=row,
+            column=indice_valor_bruto
+        ).value
+
+        valor_liquido = ws_conciliados.cell(
+            row=row,
+            column=indice_valor_liquido
+        ).value
+
+        try:
+            valor_bruto = float(valor_bruto or 0)
+        except (TypeError, ValueError):
+            valor_bruto = 0
+
+        try:
+            valor_liquido = float(valor_liquido or 0)
+        except (TypeError, ValueError):
+            valor_liquido = 0
+
+        registros.append({
+            "chave": str(chave).strip(),
+            "valor_bruto": valor_bruto,
+            "valor_liquido": valor_liquido,
+        })
 
     blocos = [
-        chaves[i:i + 2000]
-        for i in range(0, len(chaves), 2000)
+        registros[i:i + 2000]
+        for i in range(0, len(registros), 2000)
     ]
 
     linha_inicial = ws_resumo.max_row + 2
@@ -373,15 +406,45 @@ def inserir_chaves_erp_em_blocos(caminho_arquivo):
         ws_resumo.cell(
             row=linha_inicial,
             column=1,
-            value="CHAVES ERP CONCILIADAS"
+            value="CHAVES ERP CONCILIADAS POR GRUPO"
         )
         ws_resumo.cell(row=linha_inicial, column=1).font = Font(bold=True)
 
+        linha_cabecalho = linha_inicial + 1
+
+        cabecalhos = [
+            "Grupo",
+            "Quantidade de titulos",
+            "Valor bruto do grupo",
+            "Valor liquido do grupo",
+            "Chaves ERP",
+        ]
+
+        for coluna, titulo in enumerate(cabecalhos, start=1):
+            celula = ws_resumo.cell(
+                row=linha_cabecalho,
+                column=coluna,
+                value=titulo
+            )
+            celula.font = Font(bold=True)
+
     for indice, bloco in enumerate(blocos, start=1):
-        linha = linha_inicial + indice
+        linha = linha_inicial + 1 + indice
+
+        quantidade = len(bloco)
+        valor_bruto_grupo = sum(item["valor_bruto"] for item in bloco)
+        valor_liquido_grupo = sum(item["valor_liquido"] for item in bloco)
+        chaves_grupo = ", ".join(item["chave"] for item in bloco)
 
         ws_resumo.cell(row=linha, column=1, value=f"Grupo {indice}")
-        ws_resumo.cell(row=linha, column=2, value=", ".join(bloco))
+        ws_resumo.cell(row=linha, column=2, value=quantidade)
+        ws_resumo.cell(row=linha, column=3, value=valor_bruto_grupo)
+        ws_resumo.cell(row=linha, column=4, value=valor_liquido_grupo)
+        ws_resumo.cell(row=linha, column=5, value=chaves_grupo)
+
+        ws_resumo.cell(row=linha, column=2).number_format = "0"
+        ws_resumo.cell(row=linha, column=3).number_format = 'R$ #,##0.00'
+        ws_resumo.cell(row=linha, column=4).number_format = 'R$ #,##0.00'
 
     wb.save(caminho_arquivo)
 

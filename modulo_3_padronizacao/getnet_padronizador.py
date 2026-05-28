@@ -56,7 +56,7 @@ COLUNAS_INSTITUICAO_PADRAO = [
 ]
 
 
-COLUNAS_ORIGINAIS_GetNet = [
+COLUNAS_ORIGINAIS_GETNET = [
     "EC CENTRALIZADOR",
     "DATA DE VENCIMENTO",
     "TIPO DE LANÇAMENTO",
@@ -129,8 +129,8 @@ def converter_valor(valor):
         return pd.NA
 
 
-def preparar_arquivo_GetNet(df_GetNet_bruto):
-    df = df_GetNet_bruto.copy()
+def preparar_arquivo_getnet(df_getnet_bruto):
+    df = df_getnet_bruto.copy()
 
     # Procura dinamicamente a linha do cabeçalho real.
     # No GetNet, essa linha contém "EC CENTRALIZADOR".
@@ -163,12 +163,12 @@ def preparar_arquivo_GetNet(df_GetNet_bruto):
 
     # Mantém apenas as colunas necessárias
     colunas_existentes = [
-        coluna for coluna in COLUNAS_ORIGINAIS_GetNet
+        coluna for coluna in COLUNAS_ORIGINAIS_GETNET
         if coluna in df.columns
     ]
 
     colunas_faltando = [
-        coluna for coluna in COLUNAS_ORIGINAIS_GetNet
+        coluna for coluna in COLUNAS_ORIGINAIS_GETNET
         if coluna not in df.columns
     ]
 

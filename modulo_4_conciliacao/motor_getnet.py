@@ -2,7 +2,7 @@ import pandas as pd
 from rapidfuzz import fuzz
 
 
-CLIENTE_ESPERADO_GetNet = "Getnet Adquirencia E Servicos Para Meios de Pagamento S.a."
+CLIENTE_ESPERADO_GETNET = "Getnet Adquirencia E Servicos Para Meios de Pagamento S.a."
 
 
 def normalizar_id(valor):
@@ -141,18 +141,18 @@ def calcular_status_e_score(
         - linha_instituicao["valor_bruto_instituicao"]
     )
 
-    aut_GetNet = normalizar_id(linha_instituicao["autorizacao_instituicao"])
+    aut_getnet = normalizar_id(linha_instituicao["autorizacao_instituicao"])
     aut_erp = normalizar_id(linha_erp["autorizacao_erp"])
 
-    nsu_GetNet = normalizar_id(linha_instituicao["nsu_instituicao"])
+    nsu_getnet = normalizar_id(linha_instituicao["nsu_instituicao"])
     nsu_erp = normalizar_id(linha_erp["nsu_erp"])
 
-    if aut_GetNet == aut_erp or nsu_GetNet == nsu_erp:
+    if aut_getnet == aut_erp or nsu_getnet == nsu_erp:
         sim_autorizacao = 100
         sim_nsu = 100
     else:
-        sim_autorizacao = fuzz.ratio(aut_GetNet, aut_erp)
-        sim_nsu = fuzz.ratio(nsu_GetNet, nsu_erp)
+        sim_autorizacao = fuzz.ratio(aut_getnet, aut_erp)
+        sim_nsu = fuzz.ratio(nsu_getnet, nsu_erp)
 
     pontuacao = (
         dias_dif * 100
@@ -162,7 +162,7 @@ def calcular_status_e_score(
 
     if (
         "cliente_erp" in linha_erp.index
-        and linha_erp["cliente_erp"] != CLIENTE_ESPERADO_GetNet
+        and linha_erp["cliente_erp"] != CLIENTE_ESPERADO_GETNET
     ):
         pontuacao += 101
 
@@ -176,11 +176,11 @@ def calcular_status_e_score(
     elif dias_dif == 999:
         status_lista.append("Data Ausente")
 
-    if (aut_GetNet != aut_erp) and (nsu_GetNet != nsu_erp):
+    if (aut_getnet != aut_erp) and (nsu_getnet != nsu_erp):
         status_lista.append("Divergência de NSU/Autorização")
-    elif aut_GetNet != aut_erp:
+    elif aut_getnet != aut_erp:
         status_lista.append("Divergência de Autorização")
-    elif nsu_GetNet != nsu_erp:
+    elif nsu_getnet != nsu_erp:
         status_lista.append("Divergência de NSU")
 
     status_final = " e ".join(status_lista) if len(status_lista) > 1 else "Conciliado"
@@ -359,7 +359,7 @@ def conciliar_rodada(
         )
 
 
-def conciliar_GetNet(
+def conciliar_getnet(
     df_instituicao,
     df_erp,
     tolerancia_dias=5,

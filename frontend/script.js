@@ -34,10 +34,10 @@ const instituicoes = {
     pagbank: {
         nome: "PagBank",
         formato: ".csv",
-        cor: "#dc2626",
-        corSuave: "rgba(220, 38, 38, 0.16)",
-        fundoPrimario: "rgba(220, 38, 38, 0.18)",
-        fundoSecundario: "rgba(220, 38, 38, 0.08)"
+        cor: "#16a34a",
+        corSuave: "rgba(22, 163, 74, 0.16)",
+        fundoPrimario: "rgba(22, 163, 74, 0.18)",
+        fundoSecundario: "rgba(22, 163, 74, 0.08)"
     },
     credishop: {
         nome: "CredShop",

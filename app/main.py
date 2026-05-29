@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from sympy import ZZ
 
 from app.routes.conciliacao_routes import router as conciliacao_router
 

@@ -345,21 +345,36 @@ def inserir_chaves_erp_em_blocos(caminho_arquivo):
     ws_resumo = wb["Resumo"]
 
     header = [cell.value for cell in ws_conciliados[1]]
-
-    colunas_obrigatorias = [
-        "chave erp",
-        "valor bruto erp",
-        "valor liquido erp",
+    header_normalizado = [
+        str(valor).strip().lower() if valor is not None else ""
+        for valor in header
     ]
 
-    for coluna in colunas_obrigatorias:
-        if coluna not in header:
-            wb.save(caminho_arquivo)
-            return
+    if "chave erp" not in header_normalizado:
+        wb.save(caminho_arquivo)
+        return
 
-    indice_chave = header.index("chave erp") + 1
-    indice_valor_bruto = header.index("valor bruto erp") + 1
-    indice_valor_liquido = header.index("valor liquido erp") + 1
+    indice_chave = header_normalizado.index("chave erp") + 1
+
+    indice_valor_bruto = None
+    indice_valor_liquido = None
+
+    for indice, nome_coluna in enumerate(header_normalizado, start=1):
+        if (
+            nome_coluna.startswith("valor bruto ")
+            and nome_coluna != "valor bruto erp"
+        ):
+            indice_valor_bruto = indice
+
+        if (
+            nome_coluna.startswith("valor liquido ")
+            and nome_coluna != "valor liquido erp"
+        ):
+            indice_valor_liquido = indice
+
+    if indice_valor_bruto is None or indice_valor_liquido is None:
+        wb.save(caminho_arquivo)
+        return
 
     registros = []
 
@@ -435,6 +450,12 @@ def inserir_chaves_erp_em_blocos(caminho_arquivo):
         valor_bruto_grupo = sum(item["valor_bruto"] for item in bloco)
         valor_liquido_grupo = sum(item["valor_liquido"] for item in bloco)
         chaves_grupo = ", ".join(item["chave"] for item in bloco)
+
+        if len(chaves_grupo) > 30000:
+            chaves_grupo = (
+                chaves_grupo[:30000]
+                + " ... LISTA CORTADA POR LIMITE DO EXCEL"
+            )
 
         ws_resumo.cell(row=linha, column=1, value=f"Grupo {indice}")
         ws_resumo.cell(row=linha, column=2, value=quantidade)
